@@ -1,24 +1,16 @@
 # nostr-nips-skill
 
-Kimi/Claude-style agent skill: live Nostr protocol knowledge via the [NIPs repository](https://github.com/nostr-protocol/nips).
+Live Nostr protocol lookup. Teaches an agent to fetch NIPs from
+[nostr-protocol/nips](https://github.com/nostr-protocol/nips) instead of
+hallucinating field names.
 
-Teaches the agent to:
-
-- Fetch and read individual NIPs (`https://github.com/nostr-protocol/nips/blob/master/{NIP}.md`)
-- Use the NIPs README "Event Kinds" table to find which NIP documents a given kind (NIP number ≠ kind number)
-- Discover existing capabilities before implementing — check standardized tags and existing NIPs first
-
-## Why `nostr-nips`?
-
-This skill was originally named `nostr` in the source collection. It was renamed to avoid a conflict with the existing [nostr skill](https://github.com/NostrDanish/nostr-skill) (keys, BIP340 signing, NIP-19/44, relay ops). The two complement each other: `nostr` is the offline toolkit, `nostr-nips` is the live spec-lookup companion.
+Complements [nostr-skill](https://github.com/NostrDanish/nostr-skill) (offline
+keys, signing, relay scripts). This skill wins for spec text.
 
 ## Install
 
-Upload `SKILL.md` as a `.skill` package to your agent's skill library, or clone this repo into your skills directory.
-
-## Source
-
-Extracted from the [nostr-skills](https://github.com/NostrDanish/nostr-skills-registry) collection.
+Copy or symlink the repo into the agent's skills directory so `SKILL.md` is
+visible. Cursor: `.cursor/skills/nostr-nips`. Hermes: `~/.hermes/skills/nostr-nips`.
 
 ## License
 
