@@ -1,51 +1,39 @@
 ---
 name: nostr-nips
-description: Knowledge about the Nostr protocol. Use to view up-to-date NIPs, discover capabilities of the Nostr protocol, and to implement Nostr functionality correctly.
+description: "Fetch the current Nostr NIP text and map a kind number to the NIP that defines it. Use when implementing or reviewing a NIP, when a kind number's meaning is not certain, or before inventing a new kind. Triggers on NIP numbers, 'what kind', event-kind lookup, and the NIPs repo. Not the offline toolkit (that is the nostr skill) and not the nak CLI."
 license: CC-BY-SA-4.0
 ---
 
-# Nostr Protocol
+# Nostr NIPs — live spec lookup
 
-Nostr is a simple, open protocol that enables truly censorship-resistant and global social networks using cryptographic keys and signatures.
+The NIPs repository is the spec. A summary in another skill is a map, not the text. Fetch the file and follow what it says today, including a status of **unrecommended** or **deprecated**.
 
-## Finding Nostr Documentation
+## Where the text lives
 
-All Nostr protocol documentation is maintained in the NIPs (Nostr Implementation Possibilities) repository. To access this information:
+Raw markdown (this is what you read):
 
-### Reading Individual NIPs
-
-Individual NIPs can be fetched from:
 ```
-https://github.com/nostr-protocol/nips/blob/master/{NIP}.md
-```
-
-For example, NIP-01 (the basic protocol specification) is available at:
-```
-https://github.com/nostr-protocol/nips/blob/master/01.md
+https://raw.githubusercontent.com/nostr-protocol/nips/master/README.md
+https://raw.githubusercontent.com/nostr-protocol/nips/master/01.md
+https://raw.githubusercontent.com/nostr-protocol/nips/master/B7.md
 ```
 
-### Finding Event Kinds
+Filenames are the NIP id as in the README link: `01.md`, `44.md`, `5A.md`, `B7.md`, `C0.md`. Not `1.md`. A GitHub blob URL (`github.com/.../blob/master/...`) returns HTML; do not use it as the spec.
 
-Documentation for Nostr event kinds is spread across one or more NIPs. **There is no direct relationship between the NIP number and the kind number.**
+Human view, same content: `https://nips.nostr.com/01` (drop the leading zero; letter NIPs keep the letter, e.g. `https://nips.nostr.com/B7`).
 
-To find which NIPs document a specific event kind:
+If `nak` is installed, `nak nip <id>` and `nak kind <number>` are a faster index. They are not a substitute for the raw file when you are about to implement the NIP.
 
-1. First, fetch the README:
-   ```
-   https://github.com/nostr-protocol/nips/blob/master/README.md
-   ```
+## Which file to open
 
-2. Reference the "Event Kinds" table in the README to find which NIP(s) document the kind you're looking for
+1. **A NIP number** (`NIP-17`, `44`, `B7`): fetch that file. Read its status line before the body. If it says unrecommended or deprecated, read the replacement it names and build that instead.
+2. **A kind number**: fetch the README and use the **Event Kinds** table. The NIP number is not the kind number. Kind 1 is NIP-01; kind 30023 is NIP-23; kind 10002 is NIP-65. One kind can be mentioned in several NIPs; the table is the index, the linked NIP is the definition.
+3. **A feature** ("DMs", "zaps", "search", "lists"): fetch the README **List** first. Implement an existing NIP when one covers the feature. Check the struck-through entries so you do not build on NIP-04, NIP-08, NIP-15, NIP-26, NIP-28, or NIP-96.
+4. **A tag letter**: the README has a tag list. Single-letter tags are what relays index. A multi-letter tag is not a `#filter` on a stock relay.
 
-### Discovering Existing Capabilities
+## Rules
 
-The README should be consulted to:
-
-- **View the list of NIPs** - Use this to discover what capabilities already exist on the Nostr network
-- **Review client and relay messages** - Understand the communication protocol
-- **Check the list of tags** - See what standardized tags are available
-- **Decide on using existing NIPs** - Before implementing a feature, check if an existing NIP already covers it
-
-### Best Practices
-
-Always start by fetching and reviewing the README to understand the current state of the protocol and avoid reinventing existing functionality.
+- Quote the fetched file for field names, kinds, and tag order. If the fetch fails, say so. Do not fill the gap from memory.
+- The `nostr` skill's `references/nips.md` is a routing cheat sheet. When it and the raw NIP disagree, the raw NIP wins.
+- Do not invent a kind in `30000-39999` or anywhere else until the README shows the feature is missing. New kinds need a NIP-31 `alt` tag.
+- NIP-90 (data vending machines) is marked unrecommended. Do not start one.
