@@ -1,51 +1,36 @@
 ---
 name: nostr-nips
-description: Knowledge about the Nostr protocol. Use to view up-to-date NIPs, discover capabilities of the Nostr protocol, and to implement Nostr functionality correctly.
+description: "Fetch the current Nostr NIP markdown before implementing protocol behavior. Use when a task names a NIP, needs the spec for an event kind, or must know whether a NIP is still active. Triggers on NIP numbers and 'what does the spec say'. Do not use for signing, keys, or relay I/O (nostr skill) or the nak CLI (nak skill)."
 license: CC-BY-SA-4.0
 ---
 
-# Nostr Protocol
+# Nostr NIPs (live spec)
 
-Nostr is a simple, open protocol that enables truly censorship-resistant and global social networks using cryptographic keys and signatures.
+This skill fetches the spec. It does not replace it with memory. The NIP number is not the event kind number.
 
-## Finding Nostr Documentation
+## Fetch raw markdown
 
-All Nostr protocol documentation is maintained in the NIPs (Nostr Implementation Possibilities) repository. To access this information:
+GitHub blob pages are HTML. Fetch the raw file:
 
-### Reading Individual NIPs
-
-Individual NIPs can be fetched from:
 ```
-https://github.com/nostr-protocol/nips/blob/master/{NIP}.md
+https://raw.githubusercontent.com/nostr-protocol/nips/master/<FILE>.md
 ```
 
-For example, NIP-01 (the basic protocol specification) is available at:
-```
-https://github.com/nostr-protocol/nips/blob/master/01.md
-```
+- Numeric NIPs are zero-padded to two digits: NIP-01 is `01.md`, NIP-19 is `19.md`.
+- Letter NIPs keep their id: `B7.md`, `C7.md`.
+- The index, event-kind table, tag table, and status column are in `README.md` at that same raw prefix.
 
-### Finding Event Kinds
+If the file 404s, fetch the raw README and search it. The NIP may have been renamed, folded into another NIP, or rejected. Say that the fetch failed rather than inventing requirements.
 
-Documentation for Nostr event kinds is spread across one or more NIPs. **There is no direct relationship between the NIP number and the kind number.**
+## Which file
 
-To find which NIPs document a specific event kind:
+| Need | Fetch |
+|---|---|
+| A named NIP | `master/<FILE>.md` as above |
+| Which NIP defines kind N | Raw `README.md`, Event Kinds table. Then fetch that NIP. |
+| Is this tag standard? | Raw `README.md` tag table, then the NIP it cites |
+| Is this NIP deprecated? | README status for that row. If the README and a cached note disagree, the README wins |
 
-1. First, fetch the README:
-   ```
-   https://github.com/nostr-protocol/nips/blob/master/README.md
-   ```
+## After the spec is in hand
 
-2. Reference the "Event Kinds" table in the README to find which NIP(s) document the kind you're looking for
-
-### Discovering Existing Capabilities
-
-The README should be consulted to:
-
-- **View the list of NIPs** - Use this to discover what capabilities already exist on the Nostr network
-- **Review client and relay messages** - Understand the communication protocol
-- **Check the list of tags** - See what standardized tags are available
-- **Decide on using existing NIPs** - Before implementing a feature, check if an existing NIP already covers it
-
-### Best Practices
-
-Always start by fetching and reviewing the README to understand the current state of the protocol and avoid reinventing existing functionality.
+Implement with the `nostr` skill (libraries, signing, outbox, deprecated-NIP list). Use `nak` only when the task is the CLI. Do not publish, sign, or choose a relay from this skill alone.

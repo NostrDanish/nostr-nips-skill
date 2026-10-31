@@ -4,9 +4,10 @@ Kimi/Claude-style agent skill: live Nostr protocol knowledge via the [NIPs repos
 
 Teaches the agent to:
 
-- Fetch and read individual NIPs (`https://github.com/nostr-protocol/nips/blob/master/{NIP}.md`)
-- Use the NIPs README "Event Kinds" table to find which NIP documents a given kind (NIP number ≠ kind number)
-- Discover existing capabilities before implementing — check standardized tags and existing NIPs first
+- Fetch raw NIP markdown (`https://raw.githubusercontent.com/nostr-protocol/nips/master/01.md`), not the GitHub HTML page
+- Zero-pad numeric NIP filenames (`01.md`) and keep letter ids (`B7.md`)
+- Use the raw README Event Kinds table to find which NIP documents a given kind (NIP number ≠ kind number)
+- Stop and say so when a fetch 404s, instead of inventing spec text
 
 ## Why `nostr-nips`?
 
