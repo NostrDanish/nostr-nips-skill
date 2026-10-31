@@ -1,51 +1,36 @@
 ---
 name: nostr-nips
-description: Knowledge about the Nostr protocol. Use to view up-to-date NIPs, discover capabilities of the Nostr protocol, and to implement Nostr functionality correctly.
+description: "Fetch the current Nostr NIP text and find which NIP defines an event kind. Use when implementing or reviewing a NIP number, checking whether a NIP is deprecated, or mapping a kind number to its spec. Triggers on NIP-01, NIP numbers, 'what kind is', and 'is this NIP still valid'. This is the live spec lookup. The nostr skill is the offline toolkit (keys, signing, relays)."
 license: CC-BY-SA-4.0
 ---
 
-# Nostr Protocol
+# Nostr NIPs (live spec)
 
-Nostr is a simple, open protocol that enables truly censorship-resistant and global social networks using cryptographic keys and signatures.
+The NIPs repository is the spec. This skill's job is to make you read that spec instead of remembering it.
 
-## Finding Nostr Documentation
+NIP number is not the kind number. Kind 1 is NIP-01 and NIP-10. Kind 0 is replaceable metadata, not "NIP-0".
 
-All Nostr protocol documentation is maintained in the NIPs (Nostr Implementation Possibilities) repository. To access this information:
+## Do this
 
-### Reading Individual NIPs
+| Need | Command |
+|---|---|
+| The text of a NIP | `python3 scripts/nip.py get 01` (also `90`, `B7`, `A0`) |
+| Which NIP documents kind `N` | `python3 scripts/nip.py kind N` |
+| The index (kinds, tags, messages) | `python3 scripts/nip.py readme` |
+| Parser still works, no network | `python3 scripts/nip.py selftest` |
 
-Individual NIPs can be fetched from:
-```
-https://github.com/nostr-protocol/nips/blob/master/{NIP}.md
-```
+Source of every fetch: `https://raw.githubusercontent.com/nostr-protocol/nips/master/`. `github.com/.../blob/...` pages are HTML. Do not implement from them.
 
-For example, NIP-01 (the basic protocol specification) is available at:
-```
-https://github.com/nostr-protocol/nips/blob/master/01.md
-```
+If `kind` prints `NO ROW`, the kind is not in the README table. Say so. Do not invent a NIP, a tag layout, or a kind number to fill the gap.
 
-### Finding Event Kinds
+## Rules
 
-Documentation for Nostr event kinds is spread across one or more NIPs. **There is no direct relationship between the NIP number and the kind number.**
+1. Quote behavior from the file you just fetched. A NIP's status line matters: `draft`, `mandatory`, `optional`, `unrecommended`. NIP-90 is unrecommended. NIP-04, NIP-08, NIP-15, NIP-26, NIP-28 and NIP-96 are not the current way to build that feature (see the `nostr` skill's deprecated list, then confirm in the fetched file).
+2. When the README and the NIP disagree, the NIP file you fetched wins for that feature, and you say they disagree.
+3. Kind ranges from NIP-01: regular = 1, 2, 4–44, and 1000–9999. Replaceable = 0, 3, and 10000–19999. Ephemeral = 20000–29999. Addressable = 30000–39999 and needs a `d` tag. Kind 2 and 41 are regular.
+4. Filter values for `ids`, `authors`, `#e` and `#p` are exact 64-character lowercase hex. Relays index single-letter tags only.
+5. After you know which NIP, implement with the `nostr` skill's libraries and scripts. Do not hand-roll Schnorr.
 
-To find which NIPs document a specific event kind:
+## When the README table is not enough
 
-1. First, fetch the README:
-   ```
-   https://github.com/nostr-protocol/nips/blob/master/README.md
-   ```
-
-2. Reference the "Event Kinds" table in the README to find which NIP(s) document the kind you're looking for
-
-### Discovering Existing Capabilities
-
-The README should be consulted to:
-
-- **View the list of NIPs** - Use this to discover what capabilities already exist on the Nostr network
-- **Review client and relay messages** - Understand the communication protocol
-- **Check the list of tags** - See what standardized tags are available
-- **Decide on using existing NIPs** - Before implementing a feature, check if an existing NIP already covers it
-
-### Best Practices
-
-Always start by fetching and reviewing the README to understand the current state of the protocol and avoid reinventing existing functionality.
+Some features are not a single kind row: Blossom is BUD documents (the `blossom` skill), NIP-90 job kinds live in `nostr-protocol/data-vending-machines` (the `nostr-dvm` skill). Fetch those repos the same way, raw markdown, and do not treat this skill's examples as the spec.

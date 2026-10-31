@@ -2,11 +2,15 @@
 
 Kimi/Claude-style agent skill: live Nostr protocol knowledge via the [NIPs repository](https://github.com/nostr-protocol/nips).
 
-Teaches the agent to:
+Teaches the agent to read the spec instead of remembering it:
 
-- Fetch and read individual NIPs (`https://github.com/nostr-protocol/nips/blob/master/{NIP}.md`)
-- Use the NIPs README "Event Kinds" table to find which NIP documents a given kind (NIP number ≠ kind number)
-- Discover existing capabilities before implementing — check standardized tags and existing NIPs first
+```bash
+python3 scripts/nip.py get 01      # raw markdown, not the GitHub HTML page
+python3 scripts/nip.py kind 1      # which NIP documents this kind
+python3 scripts/nip.py selftest    # parser only, no network
+```
+
+NIP number is not the kind number. If the README has no row, the script says so and the agent must not invent one.
 
 ## Why `nostr-nips`?
 
