@@ -14,7 +14,7 @@ This skill was originally named `nostr` in the source collection. It was renamed
 
 ## Install
 
-Upload `SKILL.md` as a `.skill` package to your agent's skill library, or clone this repo into your skills directory.
+Upload `SKILL.md` as a `.skill` package to your agent's skill library, or clone this repo into a folder named `nostr-nips` inside your skills root so the folder matches the skill name: `git clone https://github.com/NostrDanish/nostr-nips-skill <skills-root>/nostr-nips`.
 
 ## Source
 
