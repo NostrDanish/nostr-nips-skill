@@ -43,8 +43,8 @@ class NIPResearchContractTests(unittest.TestCase):
 
     def test_missing_registry_entry_is_not_treated_as_nonexistence(self):
         self.assertIn(
-            "not listed” is not proof that no implementation exists",
-            self.text,
+            "“not listed” is not proof that no implementation exists",
+            self.lower,
         )
 
     def test_normative_strength_and_implementation_status_are_preserved(self):
