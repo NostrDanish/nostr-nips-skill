@@ -68,3 +68,11 @@ For each relevant NIP, report:
 ## Handoff
 
 Once the specification has been checked, pass implementation tasks to the nostr skill with the verified source revision and the exact relevant normative clauses. Never invent protocol behavior or new event kinds/tags from an implementation's local conventions.
+
+## Project knowledge and implementation-impact integration
+
+When researching NIPs for an owner's ongoing project portfolio, consult the configured Second Brain / project knowledge workspace when available. Find the affected project record, existing NIP dependency matrix, prior research and active implementation tasks before creating new work. Record the exact upstream revision and NIP file used, then link the research to every affected repository and feature.
+
+The workspace is not a standards authority: upstream NIPs remain normative for Nostr behavior, and the checked-out code remains authoritative for what a repository currently implements. Distinguish upstream requirements from local conventions, draft extensions and implementation-specific behavior. When a proposed change affects multiple clients, signers, relays, indexers or engines, create an explicit impact list instead of updating one repository in isolation.
+
+After research, save a dated evidence note with NIP status, revision, sections, affected repositories, unresolved conflicts and the next exact implementation/review action. Do not store secrets or private event data. If Notion is unavailable, return the same source-backed report and disclose that it was not saved to the workspace.
